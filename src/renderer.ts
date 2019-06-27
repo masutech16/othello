@@ -2,7 +2,7 @@ import * as Color from './color'
 
 export class Renderer {
 
-  constructor(public ctx: CanvasRenderingContext2D, public width: number, public height: number) { }
+  constructor(public ctx: CanvasRenderingContext2D) { }
 
   drawRect(x: number, y: number, w: number, h: number, color: Color) {
     this.ctx.fillStyle = color
@@ -24,9 +24,5 @@ export class Renderer {
     this.ctx.lineTo(endX, endY);
     this.ctx.closePath();
     this.ctx.stroke();
-  }
-
-  clearScreen() {
-    this.drawRect(0, 0, this.width, this.height, Color.green)
   }
 }

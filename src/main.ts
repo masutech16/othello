@@ -1,28 +1,23 @@
-import { Renderer } from './renderer';
+import { Renderer } from './renderer'
+import { GameView } from './gameView'
+import { GameManager } from './gameManager'
 
 let manager: GameManager
 
 window.onload = function () {
   const canvas = <HTMLCanvasElement>document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
-  if (ctx != null) {
-    const renderer = new Renderer(ctx, 600, 600)
-    manager = new GameManager(renderer)
-    console.log(manager)
-    setInterval(function () {
-      manager.main()
-    })
-  } else {
+  if (ctx === null) {
     document.body.innerHTML = '何か問題が発生しているようでです……'
+    return;
   }
+
+  const view = new GameView(ctx, canvas.width, canvas.height)
+  manager = new GameManager(view)
+  console.log(manager)
+  setInterval(function () {
+    manager.main()
+  })
 }
 
-
-class GameManager {
-  constructor(public renderer: Renderer) { }
-
-  main() {
-    this.renderer.clearScreen()
-  }
-}
 
