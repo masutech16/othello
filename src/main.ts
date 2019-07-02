@@ -1,4 +1,3 @@
-import { Renderer } from './renderer'
 import { GameView } from './gameView'
 import { GameManager } from './gameManager'
 

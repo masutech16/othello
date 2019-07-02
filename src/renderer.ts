@@ -1,5 +1,3 @@
-import * as Color from './color'
-
 export class Renderer {
 
   constructor(public ctx: CanvasRenderingContext2D) { }
