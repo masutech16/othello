@@ -27,7 +27,7 @@ export class GameView {
   drawStones(board: Array<Array<Stone>>) {
     for (let y = 0; y < board.length; y++) {
       for (let x = 0; x < board[y].length; x++) {
-        if (board[y][x] == 0) continue
+        if (board[y][x] == 0 || board[y][x] == 3) continue
         const c = board[y][x] == 1 ? Color.black : Color.white
         this.drawStone(x, y, c);
       }

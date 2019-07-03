@@ -13,7 +13,6 @@ window.onload = function () {
 
   const view = new GameView(ctx, canvas.width, canvas.height)
   manager = new GameManager(view)
-  console.log(manager)
   setInterval(function () {
     manager.main()
   })
