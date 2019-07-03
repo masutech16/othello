@@ -6,3 +6,6 @@ type Color = White | Green | Black
 
 // Stone empty - black - white - wall
 type Stone = 0 | 1 | 2 | 3
+
+// Board
+type Board = Array<Array<Stone>>
