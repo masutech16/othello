@@ -1,5 +1,6 @@
-import { Renderer } from './renderer';
+import { Renderer } from './renderer'
 import * as Color from './color'
+import * as Constant from './constantData'
 
 export class GameView {
   cellSize: number
@@ -7,9 +8,9 @@ export class GameView {
   lineWidth: number
   renderer: Renderer
   constructor(ctx: CanvasRenderingContext2D, public width: number, public height: number) {
-    this.cellSize = 64
-    this.stoneSize = 60
-    this.lineWidth = 2
+    this.cellSize = Constant.cellSize
+    this.stoneSize = Constant.stoneSize
+    this.lineWidth = Constant.lineWidth
     this.renderer = new Renderer(ctx)
   }
 
