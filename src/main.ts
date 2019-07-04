@@ -14,13 +14,10 @@ window.onload = function () {
 
   const view = new GameView(ctx, canvas.width, canvas.height)
   manager = new GameManager(view)
+  manager.initialize()
   canvas.onclick = function (e) {
     manager.onClick(e)
   }
-
-  setInterval(function () {
-    manager.main()
-  })
 }
 
 

@@ -9,3 +9,6 @@ type Stone = 0 | 1 | 2 | 3
 
 // Board
 type Board = Array<Array<Stone>>
+
+// State
+type State = 'Black' | 'White' | 'Finish'
