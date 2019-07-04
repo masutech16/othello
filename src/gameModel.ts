@@ -16,8 +16,10 @@ const initBoard: Board = [
   [3, 3, 3, 3, 3, 3, 3, 3, 3, 3],
 ]
 
+const getOpposite = (me: Stone): Stone => me === black ? white : black
+
 const reverse = (x: number, y: number, me: Stone, dx: number, dy: number, board: Board): void => {
-  const other = me === black ? white : black
+  const opposite = getOpposite(me)
   let count = 0;
 
   let ny = y + dy
@@ -27,7 +29,7 @@ const reverse = (x: number, y: number, me: Stone, dx: number, dy: number, board:
       case empty:
       case wall:
         return
-      case other:
+      case opposite:
         count++
         break
       case me:
@@ -42,6 +44,27 @@ const reverse = (x: number, y: number, me: Stone, dx: number, dy: number, board:
   }
 }
 
+const canReverse = (x: number, y: number, me: Stone, dx: number, dy: number, board: Board) => {
+  const opposite = getOpposite(me)
+  let c = 1
+  let flag = false
+
+  while (true) {
+    switch (board[y + dy * c][x + dx * c]) {
+      case wall:
+      case empty:
+        return false
+      case me:
+        return flag
+      case opposite:
+        c++
+        flag = true
+    }
+  }
+}
+
+const validateIndex = (i: number) => 1 <= i && i <= 8
+
 
 export class GameModel {
   board: Board
@@ -54,24 +77,12 @@ export class GameModel {
   }
 
   canPutStone(x: number, y: number, me: Stone): boolean {
+    if (!(validateIndex(x) && validateIndex(y))) return false
     if (this.board[y][x] !== empty) return false
     const other = me === black ? white : black
     for (let dx = -1; dx < 2; dx++) {
       for (let dy = -1; dy < 2; dy++) {
-        let c = 1
-        let flag = false
-        while (true) {
-          switch (this.board[y + dy * c][x + dx * c]) {
-            case wall:
-            case empty:
-              break
-            case me:
-              if (flag) return true
-              break
-            case other:
-              flag = true
-          }
-        }
+        if (canReverse(x, y, me, dx, dy, this.board)) return true
       }
     }
     return false
@@ -85,5 +96,6 @@ export class GameModel {
         reverse(x, y, me, dx, dy, this.board)
       }
     }
+    this.board[y][x] = me
   }
 }
