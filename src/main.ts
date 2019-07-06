@@ -18,6 +18,10 @@ window.onload = function () {
   canvas.onclick = function (e) {
     manager.onClick(e)
   }
+  window.setInterval(function () {
+    manager.update()
+    manager.draw()
+  }, 1000 / 60)
 }
 
 

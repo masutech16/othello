@@ -98,4 +98,13 @@ export class GameModel {
     }
     this.board[y][x] = me
   }
+
+  canPutAnywhere(me: Stone): boolean {
+    for (let y = 0; y < this.board.length; y++) {
+      for (let x = 0; x < this.board[y].length; x++) {
+        if (this.canPutStone(x, y, me)) return true
+      }
+    }
+    return false
+  }
 }

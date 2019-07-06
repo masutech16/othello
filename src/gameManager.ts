@@ -6,32 +6,53 @@ const size = cellSize + lineWidth
 const black: Stone = 1
 const white: Stone = 2
 
-// TODO: modelに移す
-const calcIndex = (posX: number, posY: number): [number, number] =>
-  [Math.floor((posX - lineWidth / 2) / size) + 1, Math.floor((posY - lineWidth / 2) / size) + 1]
+
+const calcIndex = (posX: number, posY: number): { x: number, y: number } => ({
+  x: Math.floor((posX - lineWidth / 2) / size) + 1,
+  y: Math.floor((posY - lineWidth / 2) / size) + 1
+})
 
 
 export class GameManager {
-  model: GameModel
-  currentState: State = 'Black'
-  constructor(public view: GameView) {
+  private model: GameModel
+  private currentState: State = 'Black'
+  private clickPos: { x: number, y: number } = { x: 0, y: 0 }
+  constructor(private view: GameView) {
     this.model = new GameModel()
   }
 
-  initialize() {
+  initialize(): void {
     this.view.drawBoard()
     this.view.drawStones(this.model.board)
   }
 
-  onClick(ev: MouseEvent) {
-    if (this.currentState === 'Finish') return
-    const me = this.currentState === 'Black' ? black : white
-    // DOMが重なるようなことがなければこれでちゃんとした座標が取得できる
-    const [x, y] = calcIndex(ev.offsetX, ev.offsetY)
-    if (this.model.canPutStone(x, y, me)) {
-      this.model.putStone(x, y, me)
-      this.currentState = this.currentState === 'Black' ? 'White' : 'Black'
+  update(): void {
+    const { x, y } = this.clickPos
+    if (x !== 0 || y !== 0) {
+      const me = this.currentState === 'Black' ? black : white
+      if (this.model.canPutStone(x, y, me)) {
+        this.model.putStone(x, y, me)
+        const canPutWhite = this.model.canPutAnywhere(white)
+        const canPutBlack = this.model.canPutAnywhere(black)
+        if (this.currentState === 'Black') {
+          this.currentState = canPutWhite ? 'White' : 'Black'
+        } else {
+          this.currentState = canPutBlack ? 'Black' : 'White'
+        }
+        if (!canPutBlack && !canPutWhite) {
+          this.currentState = 'Finish'
+        }
+      }
     }
+  }
+
+  draw(): void {
+    this.view.drawBoard()
     this.view.drawStones(this.model.board)
+  }
+
+  onClick(ev: MouseEvent): void {
+    if (this.currentState === 'Finish') return
+    this.clickPos = calcIndex(ev.offsetX, ev.offsetY)
   }
 }
